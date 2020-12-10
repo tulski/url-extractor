@@ -32,7 +32,7 @@ export default class ExtractorScraper {
   }
 
   /**
-   * Goes to the site and checks the response status. If status is in the range 200-300 returns true
+   * Goes to the site and checks the response status. If status is in the range 200-399 returns true
    * @param page
    * @param link to validate
    */
@@ -44,7 +44,7 @@ export default class ExtractorScraper {
 
   /**
    * Returns all links from already loaded page that includes rootLink
-   * @param page
+   * @param page (already loaded)
    * @param rootLink
    */
   async scrapeAllSubLinks(page: Page, rootLink: string) {
@@ -54,7 +54,7 @@ export default class ExtractorScraper {
 
   /**
    * Get all links from already loaded page. Links are trimmed and without any parameters (such as # or ?foo=bar) at the end
-   * @param page
+   * @param page (already loaded)
    */
   async getAllLinks(page: Page): Promise<string[]> {
     return await page.evaluate(getAllLinks);
