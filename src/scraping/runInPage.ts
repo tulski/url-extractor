@@ -8,7 +8,6 @@ export async function runInPage<T>(
   try {
     return await callback(page);
   } finally {
-    // await page.close();
-    console.log("page done");
+    await page.close();
   }
 }

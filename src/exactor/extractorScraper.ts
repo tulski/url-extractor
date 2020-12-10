@@ -13,7 +13,10 @@ export default class ExtractorScraper {
 
       while (allLinks.length) {
         const currentLink = allLinks.pop()!;
-        if (!validLinks.includes(currentLink)) {
+        if (
+          (await this.isUrlValid(page, currentLink)) &&
+          !validLinks.includes(currentLink)
+        ) {
           const subLinks = await this.scrapeAllSubLinks(
             page,
             currentLink,
@@ -28,20 +31,20 @@ export default class ExtractorScraper {
     });
   }
 
+  async isUrlValid(page: Page, link: string): Promise<boolean> {
+    const httpResponse = await page.goto(link);
+    const status = httpResponse?.status();
+    if (status && status >= 200 && status <= 399) return true;
+    return false;
+  }
+
   async scrapeAllSubLinks(page: Page, link: string, rootLink: string) {
     const allLinks = await this.getAllLinks(page, link);
     return allLinks.filter((link) => link.includes(rootLink));
   }
 
   async getAllLinks(page: Page, link: string): Promise<string[]> {
-    const httpResponse = await page.goto(link, {
-      waitUntil: "networkidle0",
-    });
-    const status = httpResponse?.status();
-    if (status && status >= 200 && status <= 399) {
-      return await page.evaluate(getAllLinks);
-    } else {
-      return [];
-    }
+    await page.goto(link);
+    return await page.evaluate(getAllLinks);
   }
 }

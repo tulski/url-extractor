@@ -11,7 +11,6 @@ export async function runInBrowser<T>(
   try {
     return await callback(browser);
   } finally {
-    // await browser.close();
-    console.log("browser done");
+    await browser.close();
   }
 }
