@@ -3,7 +3,7 @@ import ExtractorScraper from "./exactor/extractorScraper";
 import { validateUrls } from "./validation/urlValidator";
 
 (async () => {
-  const rootUrl = "http://books.toscrape.com/";
+  const rootUrl = "https://billtech.pl/";
 
   const urls: string[] = await runInBrowser(async (browser) =>
     new ExtractorScraper(() => browser.newPage()).scrape(rootUrl)
